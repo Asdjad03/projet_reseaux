@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "client_udp.C": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
