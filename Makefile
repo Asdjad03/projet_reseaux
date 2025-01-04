@@ -1,13 +1,13 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11 -Iinclude
 
-all: client_tcp server_tcp
+all: client_udp server_udp
 
-client_tcp: src/TCP/client_tcp.c src/TCP/header_tcp.h
-	$(CC) $(CFLAGS) -o client_tcp src/TCP/client_tcp.c
+client_udp: src/UDP/client_ud.c
+	$(CC) $(CFLAGS) -o client_udp src/UDP/client_ud.c
 
-server_tcp: src/TCP/server_tcp.c src/TCP/header_tcp.h src/TCP/utils.c
-	$(CC) $(CFLAGS) -o server_tcp src/TCP/server_tcp.c
+server_udp: src/UDP/server_udp.c src/UDP/header_udp.h src/UDP/utils_udp.c
+	$(CC) $(CFLAGS) -o server_udp src/UDP/server_udp.c 
 
 clean:
-	rm -f client_tcp server_tcp
+	rm -f client_udp server_udp

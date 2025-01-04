@@ -1,29 +1,33 @@
-#include "header_tcp.h"
-#include "utils.c"
+//BAKARY Asdjad 
+// Projet Réseau gestion bancaire
+// SERVEUR_TCP : Gestion d'un seul client
+
+#include "header_tcp.h"     //en-tête contenant les structures et prototypes
+#include "utils.c"          //fonctions utilitaires
 
 // Variables globales
-Client clients[MAX_COMPTES];
-int nb_clients = 0;
+Client clients[MAX_COMPTES]; // Tableau pour stocker les clients ( client unique ici)
+int nb_clients = 0;         // Nombre actuel de clients dans le système
 
 // Fonction pour ajouter une somme sur un compte
 void ajouter_somme(Compte *compte, float somme, char *reponse) {
     afficher_log("Traitement de l'opération AJOUT");
 
-    compte->solde += somme;
+    compte->solde += somme;         // Mise à jour du solde
 
-    // Ajouter une opération avec la date
+    // Enregistrement de l'operation
     char date[50];
     obtenir_heure_actuelle(date, 50);
     snprintf(compte->operations[compte->op_index].type, sizeof(compte->operations[compte->op_index].type), "AJOUT");
     compte->operations[compte->op_index].montant = somme;
     snprintf(compte->operations[compte->op_index].date, sizeof(compte->operations[compte->op_index].date), "%s", date);
-    compte->op_index = (compte->op_index + 1) % MAX_OPERATIONS;
+    compte->op_index = (compte->op_index + 1) % MAX_OPERATIONS;      // Gestion circulaire des opérations
     if (compte->op_index == 0) {
         afficher_log("L'historique des opérations a atteint sa capacité maximale. Écrasement des anciennes opérations.");
     }
 
     snprintf(reponse, BUFFER_SIZE, "OK : %.2f € ajouté, nouveau solde : %.2f € \n", somme, compte->solde);
-    afficher_log(reponse);
+    afficher_log(reponse);      //log de confirmation
 
 }
 
@@ -32,9 +36,9 @@ void retirer_somme(Compte *compte, float somme, char *reponse) {
     afficher_log("Traitement de l'opération RETRAIT");
 
     if (compte->solde >= somme) {
-        compte->solde -= somme;
+        compte->solde -= somme;         //Mise a jour solde
 
-        // Ajouter une opération avec la date
+        // Enregistrement de l'operation
         char date[50];
         obtenir_heure_actuelle(date, 50);
         snprintf(compte->operations[compte->op_index].type, sizeof(compte->operations[compte->op_index].type), "RETRAIT");
@@ -46,8 +50,7 @@ void retirer_somme(Compte *compte, float somme, char *reponse) {
     } else {
         snprintf(reponse, BUFFER_SIZE, "KO : Solde insuffisant");
     }
-    afficher_log(reponse);
-
+    afficher_log(reponse);      
 }
 
 // Fonction pour obtenir le solde d'un compte
@@ -58,7 +61,6 @@ void obtenir_solde(Compte *compte, char *reponse) {
     }
     snprintf(reponse, BUFFER_SIZE, "RES_SOLDE : Solde : %.2f €, Dernière opération : %s \n", compte->solde, date_derniere_op);
     afficher_log(reponse);
-
 }
 
 
@@ -79,10 +81,9 @@ void obtenir_operations(Compte *compte, char *reponse) {
         strncat(reponse, "Aucune opération enregistrée\n", BUFFER_SIZE - strlen(reponse) - 1);
     }
     afficher_log(reponse);
-
 }
 
-// Fonction pour traiter l'authentification
+// Fonction pour authentifier un client
 int authentifier_client(const char *id_client, const char *id_compte, const char *password) {
     for (int i = 0; i < nb_clients; i++) {
         if (strcmp(clients[i].id_client, id_client) == 0) {
@@ -97,7 +98,7 @@ int authentifier_client(const char *id_client, const char *id_compte, const char
     return 0; // Authentification échouée
 }
 
-// Fonction pour traiter les requêtes d'un client
+// Fonction pour gérer les interactions avec un client
 void traiter_client(int client_socket) {
     char buffer[BUFFER_SIZE] = {0};
     char reponse[BUFFER_SIZE] = {0};
@@ -120,7 +121,7 @@ void traiter_client(int client_socket) {
                 perror("[ERREUR] Lecture des identifiants");
             }
             close(client_socket);
-            return;
+            return;     //Deconnexion ou erreur
         }
 
         buffer[bytes_read] = '\0'; // Assurer que la chaîne est terminée

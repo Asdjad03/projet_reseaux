@@ -1,15 +1,19 @@
+//BAKARY Asdjad 
+// Projet Réseau gestion bancaire
+// HEADER_TCP 1 client 
+
 #ifndef HEADER_H
 #define HEADER_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <time.h>
+#include <stdio.h>      // Entrées/sorties standard
+#include <stdlib.h>     // Fonctions utilitaires (malloc, free, exit ...)
+#include <string.h>     // Gestion des chaînes de caractères
+#include <unistd.h>     // gestion des fichiers et sockets
+#include <arpa/inet.h>  // Fonctions et structures pour les communications réseau
+#include <time.h>       // Gestion des dates et heures
 
 #define PORT 8080             // Port d'écoute pour le serveur
-#define BUFFER_SIZE 1024      // Taille du tampon pour les communications
+#define BUFFER_SIZE 1024      // Taille max du tampon pour les communications
 #define MAX_COMPTES 10        // Nombre maximum de comptes
 #define MAX_OPERATIONS 10     // Nombre maximum d'opérations par compte
 
@@ -22,7 +26,7 @@ typedef struct {
 
 // Structure pour représenter un compte
 typedef struct {
-    char id_compte[50];      // Identifiant du compte
+    char id_compte[50];      // Identifiant unique du compte
     char password[50];       // Mot de passe du compte
     float solde;             // Solde actuel du compte
     Operation operations[MAX_OPERATIONS]; // Tableau des dernières opérations
@@ -37,12 +41,27 @@ typedef struct {
 } Client;
 
 // Prototypes des fonctions
+// Ces fonctions seront définies dans les fichiers d'implémentation correspondants 
+
+// Fonction pour ajouter une somme au compte
 void ajouter_somme(Compte *compte, float somme, char *reponse);
+
+// Fonction pour retirer une somme du compte
 void retirer_somme(Compte *compte, float somme, char *reponse);
+
+// Fonction pour obtenir le solde actuel du compte
 void obtenir_solde(Compte *compte, char *reponse);
+
+// Fonction pour récupérer l'historique des opérations
 void obtenir_operations(Compte *compte, char *reponse);
+
+// Fonction principale pour traiter les interactions avec un client
 void traiter_client(int client_socket);
+
+// Fonction pour afficher un log avec un message
 void afficher_log(const char *message);
+
+// Fonction pour obtenir l'heure actuelle sous forme de chaîne de caractères
 void obtenir_heure_actuelle(char *buffer, int taille);
 
 #endif
