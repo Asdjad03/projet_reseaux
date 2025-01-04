@@ -1,10 +1,13 @@
 //BAKARY Asdjad 
 // Projet Réseau gestion bancaire
 // UTILS_TCP 1 client 
+// Note: Ce fichier utilitaire doit être compilé avec le fichier serveur pour éviter les définitions multiples.
+
 
 #include <stdio.h>      // entrées/sorties
 #include <time.h>       // gestion et manipulation des dates et heures
-#include "header_tcp.h" //fichier d'en-tête contenant les définitions globales
+//#include "header_tcp.h" //fichier d'en-tête contenant les définitions globales
+#include "header_tcp_bonus.h" //fichier d'en-tête contenant les définitions globales
 
 
 
